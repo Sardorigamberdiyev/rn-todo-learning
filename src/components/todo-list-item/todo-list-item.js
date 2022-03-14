@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const TodoListItem = (props) => {
-    const { todo: { id, title }, removeTodo } = props;
+    const { todo: { id, title }, removeTodo, openTodo } = props;
     return (
         <TouchableOpacity 
         activeOpacity={0.5}
-        onPress={() => console.log(`Press todo in id ${id}`)}
+        onPress={() => openTodo(id)}
         onLongPress={() => removeTodo(id)}>
             <View style={styles.todo}>
                 <Text>{title}</Text>

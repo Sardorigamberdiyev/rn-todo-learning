@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import TodoListItem from '../todo-list-item';
 
 const TodoList = (props) => {
-    const { todos, setTodos, removeTodo } = props;
+    const { todos, setTodos, removeTodo, openTodo } = props;
     return (
         <View style={styles.todoList}>
             <FlatList 
@@ -11,7 +11,7 @@ const TodoList = (props) => {
             data={todos}
             refreshing={false}
             onRefresh={() => setTodos([])}
-            renderItem={({item}) => <TodoListItem todo={item} removeTodo={removeTodo} />} />
+            renderItem={({item}) => <TodoListItem todo={item} openTodo={openTodo} removeTodo={removeTodo} />} />
         </View>
     )
 }
