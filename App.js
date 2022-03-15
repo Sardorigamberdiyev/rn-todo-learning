@@ -1,12 +1,27 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
+import { THEME } from './src/theme';
 import Navbar from './src/components/navbar';
 import MainScreen from './src/screens/main-screen';
 import TodoScreen from './src/screens/todo-screen';
 
+const customFonts = {
+  'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
+  'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf')
+}
+
 export default function App() {
-  const [todoId, setTodoId] = useState(null)
+  const [todoId, setTodoId] = useState(null);
   const [todos, setTodos] = useState([]);
+
+  const [fontsLoaded] = useFonts(customFonts);
+
+  if (!fontsLoaded) {
+    return <AppLoading  />
+  }
 
   const addTodo = (title) => {
     const newTodo = {
@@ -19,7 +34,6 @@ export default function App() {
 
   const removeTodo = (id) => {
     const todo = todos.find((todo) => todo.id === id);
-    console.log(todo);
     Alert.alert(
       "Удаление элемента",
       `Вы уверены, что хотите удалить "${todo.title}"?`,
@@ -41,6 +55,14 @@ export default function App() {
     );
   }
 
+
+  const updateTodo = (id, title) => {
+    setTodos((prevTodos) => prevTodos.map((todo) => {
+      if (todo.id === id) todo.title = title;
+      return todo;
+    }))
+  }
+
   let content = (
     <MainScreen 
       addTodo={addTodo}
@@ -52,7 +74,13 @@ export default function App() {
 
   if (todoId) {
     const selectTodo = todos.find((todo) => todo.id === todoId);
-    content = <TodoScreen goBack={() => setTodoId(null)} todo={selectTodo} removeTodo={removeTodo} />
+    content = (
+      <TodoScreen 
+      goBack={() => setTodoId(null)}
+      todo={selectTodo} 
+      removeTodo={removeTodo} 
+      onSave={updateTodo} />
+    )
   }
 
   return (
@@ -68,7 +96,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 30,
+    paddingHorizontal: THEME.PADDING_HORIZONTAL,
     paddingVertical: 20
   }
 });

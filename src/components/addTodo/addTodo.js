@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Button, Alert } from 'react-native';
+import { View, StyleSheet, TextInput, Alert, Keyboard } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import { THEME } from '../../theme';
 
 const AddTodo = ({ addTodo }) => {
@@ -10,6 +11,7 @@ const AddTodo = ({ addTodo }) => {
         if (valueTrim) {
             addTodo(valueTrim);
             setValue('');
+            Keyboard.dismiss();
         } else {
             Alert.alert('Название дела не может быть пустым');
         }
@@ -24,10 +26,13 @@ const AddTodo = ({ addTodo }) => {
             value={value}
             autoCorrect={false}
             autoCapitalize="none" />
-            <Button 
+            <AntDesign.Button 
+            onPress={pressHandler} 
+            name="pluscircleo">Добавить</AntDesign.Button>
+            {/* <Button 
             title="Добавить"
             style={styles.btn}
-            onPress={pressHandler} />
+            onPress={pressHandler} /> */}
         </View>
     )
 }
@@ -39,7 +44,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     input: {
-        width: '70%',
+        width: '60%',
         padding: 10,
         borderStyle: 'solid',
         borderBottomWidth: 2,
